@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Writing a simple LISP interpreter in C#
-unpublished: true
+published: false
 ---
 
 A few months ago, I decided to develop an interpreter for a subset of the LISP programming language. This was a great exercise, and I’d like to share a few things I learned along the way. 
