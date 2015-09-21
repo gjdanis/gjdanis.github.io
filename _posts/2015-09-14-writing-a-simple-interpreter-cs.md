@@ -184,7 +184,7 @@ private static Expression From(SExpList root)
 }
 {%endhighlight %}
 
-One final remark: if the first element is not an <code>SExpAtom</code>, it's an <code>SExpList</code> and must also be parsed to a <code>Call</code>. In this case, the function call must <i>return</i> a function that will be applied to the rest of the arguments in the list. For example, <code>((myfunc 1) 2)</code>; <code>(myfunc 1)</code> returns a function that is then called on <code>2</code>. 
+One final remark: if the first element is not an <code>SExpAtom</code>, it's an <code>SExpList</code> and must also be parsed to a <code>Call</code>. In this case, the function call must <i>return</i> a function that will be applied to the rest of the arguments in the list. For example, the inner expression of <code>((myfunc 1) 2)</code> returns a function that is then called on <code>2</code>. 
 
 ## Evaluation
 
