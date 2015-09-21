@@ -136,7 +136,7 @@ private static Expression From(SExpAtom atom)
 {% endhighlight %}
 
 
-If we’re given an <code>SExpList</code>, we need to examine the first element of the list. If it’s an <code>SExpAtom</code>, it’s string token should parse to one of the syntax keywords, (for example <code>if</code> or <code>lambda</code>) which will tell us how to proceed parsing the rest of the contents of the list. If it doesn't, we’ll return a <code>Call</code> as the string should be a variable reference. 
+If we’re given an <code>SExpList</code>, we need to examine the first element of the list. If it’s an <code>SExpAtom</code>, its string token should parse to one of the syntax keywords, (for example <code>if</code> or <code>lambda</code>) which will tell us how to proceed parsing the rest of the contents of the list. If it doesn't, we’ll return a <code>Call</code> as the string should be a variable reference. 
 
 {%highlight csharp linenos %}
 private static Expression From(SExpList root)
