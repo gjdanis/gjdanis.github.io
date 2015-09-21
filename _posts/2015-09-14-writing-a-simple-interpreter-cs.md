@@ -353,7 +353,7 @@ public override void Accept(IExpressionVisitor v)
 }
 {% endhighlight %}
 
-The above code shows how the visitable tells the visitor to "visit me." This design pattern is essentially a switch statement on the types of the visitables. It’s like we’re using the <code>is</code> keyword to determine how to proceed when given an <code>Expression</code>. The nice thing about the pattern, however, is that we don't then need to cast to target type. As an example, here is how we would visit a <code>Call</code> expression. 
+The above code shows how the visitable tells the visitor to "visit me." This design pattern is essentially a switch statement on the types of the visitables. It’s like we’re using the <code>is</code> keyword to determine how to proceed when given an <code>Expression</code>. The nice thing about the design pattern, however, is that we don't then need to cast to the target type. As an example, here's how we would visit a <code>Call</code> expression. 
 
 {%highlight csharp linenos %}
 // "Call" just accepted me; here's how I visit a "Call"
