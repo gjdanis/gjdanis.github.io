@@ -136,7 +136,7 @@ private static Expression From(SExpAtom atom)
 {% endhighlight %}
 
 
-If we’re given an <code>SExpList</code>, we need to examine the first element of the list. If it’s an <code>SExpAtom</code>, it’s string token should parse to one of the syntax keywords, (for example <code>if</code> or <code>lambda</code>) which will tell us how to proceed parsing the rest of the contents of the list. If it doesn't, we’ll return a <code>Call</code> as the string should be a variable reference. 
+If we’re given an <code>SExpList</code>, we need to examine the first element of the list. If it’s an <code>SExpAtom</code>, its string token should parse to one of the syntax keywords, (for example <code>if</code> or <code>lambda</code>) which will tell us how to proceed parsing the rest of the contents of the list. If it doesn't, we’ll return a <code>Call</code> as the string should be a variable reference. 
 
 {%highlight csharp linenos %}
 private static Expression From(SExpList root)
@@ -353,7 +353,7 @@ public override void Accept(IExpressionVisitor v)
 }
 {% endhighlight %}
 
-The above code shows how the visitable tells the visitor to "visit me." This design pattern is essentially a switch statement on the types of the visitables. It’s like we’re using the <code>is</code> keyword to determine how to proceed when given an <code>Expression</code>. The nice thing about the pattern, however, is that we don't then need to cast to target type. As an example, here is how we would visit a <code>Call</code> expression. 
+The above code shows how the visitable tells the visitor to "visit me." This design pattern is essentially a switch statement on the types of the visitables. It’s like we’re using the <code>is</code> keyword to determine how to proceed when given an <code>Expression</code>. The nice thing about the design pattern, however, is that we don't then need to cast to the target type. As an example, here's how we would visit a <code>Call</code> expression. 
 
 {%highlight csharp linenos %}
 // "Call" just accepted me; here's how I visit a "Call"
