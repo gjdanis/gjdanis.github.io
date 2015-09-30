@@ -7,7 +7,7 @@ A few months ago, I decided to develop an interpreter for a subset of the LISP p
 
 ### Full code and where we’re going
 
-By the end of this blog, you'll know how to implement a simple interpreter. And your code will be able to interpret code like this.
+By the end of this blog you'll know how to implement a simple interpreter. And your code will be able to interpret code like this.
 
 {% highlight racket %}
 > (define fib (lambda (n) ;; Fibonacci!
