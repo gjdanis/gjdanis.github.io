@@ -211,7 +211,7 @@ def memoize(f):
     return inner # returning a pointer to the inner function!
 {% endhighlight %}
 
-In the above function, we memoize the arguments passed to <code>inner</code>. The last line indicates that we're returning a function. Since <code>inner</code> lies inside <code>memoize</code>, the dictionary <code>d</code> will be available to whatever consumes the returned <code>inner</code> function (the more technical term for the code we've written is a [function closure](https://en.wikipedia.org/wiki/Closure_(computer_programming))). With our general purpose memoizing function in hand, here's how we now might memoize the original <code>fibonacci</code> function.
+In the above function, we memoize the arguments passed to <code>inner</code>. Since <code>inner</code> lies inside <code>memoize</code>, the dictionary <code>d</code> will be available to whatever consumes the returned <code>inner</code> function (the more technical term for the code we've written is a [function closure](https://en.wikipedia.org/wiki/Closure_(computer_programming))). With our general purpose memoizing function in hand, here's how we now might memoize the original <code>fibonacci</code> function.
 
 {% highlight python %}
 >>> def fibonacci(n):
