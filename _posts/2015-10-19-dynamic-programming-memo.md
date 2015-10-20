@@ -33,7 +33,7 @@ Another famous recursive function produces the numbers in the below sequence.
 
 {% endhighlight %}
 
-These are of course the first ten digits in the [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number) where the definition for the next number is always the sum of the two preceding numbers (the first and the second Fibonacci numbers are one). We can again easily implement this recursive definition with one line of Python.  
+These are of course the first ten digits in the [Fibonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number) where the definition for the next number is always the sum of the two preceding numbers (as part of the definition, the first and the second Fibonacci numbers are one). We can again easily implement this function with one line of Python.  
 
 {% highlight python %}
 def fibonacci(n):
@@ -102,7 +102,7 @@ The idea of storing previous computed values rather than recomputing them is cal
 
 Let's take a look at another example, the so called [knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem). Given a set of items, each with a weight and a value, a solution to the knapsack problem determines which subset of items to include in a knapsack such that the total knapsack weight is less than or equal to a given limit and the total value of the knapsack is as large as possible. The items cannot be broken apart and can only be taken once. 
 
-If we have no items to take, our solution is empty (no items, no weight, no value). If, however, we have items to take, there are two possibilities to consider when choosing whether or not to pack an item. If the item and the current knapsack weight are less than the weight limit, we can either take the item, thereby increasing our total value and weight, or leave the item behind (we don't have to take it just because we can). The second possibility forces the decision on us: if instead the item puts us over the capacity, we can't take it, and it must be left behind. 
+If we have no items to take, our solution is empty (no items, no weight, no value). If, however, we have items to take, there are two possibilities to consider when choosing whether or not to pack an item. First, if the item and the current knapsack weight are less than the weight limit, we can either take the item, thereby increasing our total value and weight, or leave the item behind (we don't have to take it just because we can). The second possibility forces the decision on us: if instead the item puts us over the capacity, we can't take it, and it must be left behind. 
 
 This sounds like a recursive solution. We look at the first item in the available set, and solve the problem on the remaining items recursively. The choice that produces the best total value wins and is returned. 
 
@@ -221,7 +221,7 @@ In the above function, we memoize the arguments passed to <code>inner</code>. Si
 573147844013817084101
 {% endhighlight %}
 
-Even better, Python's built in [decorator](https://www.python.org/dev/peps/pep-0318/) syntax actually supports this kind of function wrapping natively. 
+Even better, Python's built in [decorator](https://www.python.org/dev/peps/pep-0318/) syntax actually supports this kind of function wrapping natively. This is the most Pythonic solution I can think of.
 
 {% highlight python %}
 @memoize
@@ -229,7 +229,6 @@ def fibonacci(n):
     return 1 if n == 0 or n == 1 else fibonacci(n-1) + fibonacci(n-2)
 {% endhighlight %}
 
-This the most Pythonic solution I can think of.
 
 ### Party optimization 
 
@@ -278,7 +277,7 @@ def party(tree):
     return max(include(tree), exclude(tree), key = lambda t: t.fun_value)
 {% endhighlight %}
 
-This algorithm scales great for trees of arbitrary depth. Here's some code I used to generate random trees.
+This algorithm scales great for trees of arbitrary depth. Here's some code I used to test.
 
 {% highlight python %}
 import random
