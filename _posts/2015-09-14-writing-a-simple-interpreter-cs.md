@@ -38,7 +38,7 @@ If we see an opening parenthesis, we know that we’re populating a list. We sho
 
 In my implementation, I defined two types, <code>SExpAtom</code> and <code>SExpList</code>, both of which derive from <code>SExp</code>, an abstract class that is used to group the two child classes (more formally, the LISP syntax uses [<i>s-expressions</i>](https://en.wikipedia.org/wiki/S-expression)). I then apply the recursive algorithm described above to the input text. 
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 public static SExp Parse(string input)
 {
     var tokens = input
@@ -73,7 +73,7 @@ The preceding step produced a structure that is far easier to process than the i
 
 The base type for all syntax classes is <code>Expression</code>. 
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 abstract class Expression
 {
     public abstract Value Evaluate(Dictionary<string, Expression> env)
@@ -82,7 +82,7 @@ abstract class Expression
 
 This base class requires that subclasses provide an implementation for the <code>Evaluate</code> method. <code>Evaluate</code> produces a <code>Value</code>, a derived type of <code>Expression</code> that evaluates to itself. 
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 abstract class Value : Expression 
 {
     public Value(object underlying)
@@ -121,7 +121,7 @@ Our interpreter will support two <code>Value</code> types: <code>Bool(bool b)</c
 * <code>Variable(string name)</code> represents a variable reference to lookup the <code>Expression</code> stored at <code>name</code> e.g. <code>x</code>
 
 Given an <code>SExp</code>, or goal will be to turn the <code>SExp</code> into one of the above types. If we’re given an <code>SExpAtom</code>, we need to parse the string token to a <code>Value</code> and return the result. 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 private static Expression From(SExpAtom atom)
 {
     double x;
@@ -138,7 +138,7 @@ private static Expression From(SExpAtom atom)
 
 If we’re given an <code>SExpList</code>, we need to examine the first element of the list. If it’s an <code>SExpAtom</code>, its string token should parse to one of the syntax keywords, (for example <code>if</code> or <code>lambda</code>) which will tell us how to proceed parsing the rest of the contents of the list. If it doesn't, we’ll return a <code>Call</code> as the string should be a variable reference. 
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 private static Expression From(SExpList root)
 {
     // "Require" throws an exception if the test condition is not satisfied
@@ -194,7 +194,7 @@ I mentioned earlier that we'd save discussion of the <code>env</code> argument i
 
 Evaluation is pretty straightforward in most cases. If an <code>Expression</code> contains sub-expressions, evaluate those to <code>Value</code> types first, and then perform the required operations to coalesce the sub-expressions to a <code>Value</code>. We'd do this for evaluating a <code>ListFunction</code>, for example. 
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 // Evaluate method for "ListFunction"
 public override Value Evaluate(Dictionary<string, Expression> env)
 {
@@ -215,7 +215,7 @@ The final code is a little cleaner. I put the operation methods in an extension 
 
 <code>If</code> statements evaluate <code>Test</code> to a <code>Bool</code> and branch as expected. <code>Define</code> statements put their definition in the current environment, and return null. <code>Variable</code> expressions conversely return the <code>Expression</code> located at <code>Name</code>.
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 // Evaluate method for "If"
 public override Value Evaluate(Dictionary<string, Expression> env)
 {
@@ -239,7 +239,7 @@ public override Value Evaluate(Dictionary<string, Expression> env)
 
 It's easy enough to check how we're doing. 
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 public static void Main(string[] args)
 {
     var env = new Dictionary<string, Expression>();
@@ -262,7 +262,7 @@ Our parsing algorithm actually introduced the idea of closures earlier when I di
 
 Evaluation of a <code>Call</code> thus evaluates its <code>Body</code> to a <code>Closure</code>, and extends the environment of the <code>Closure</code> with the evaluation-time arguments of the <code>Call</code>. The body of the <code>Lambda</code> in the <code>Closure</code>is then evaluated in the environment of the <code>Closure</code>. 
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 // Evaluate method for "Lambda" 
 public override Value Evaluate(Dictionary<string, Expression> env)
 {
@@ -288,7 +288,7 @@ That’s it! A little complicated, yes, although there’s not a lot of code nee
 
 It doesn't hurt to throw in a few tests. Looks like I delivered on that promise at the start of this post!
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 public static void Main(string[] args)
 {
     expression = Parser.Parse(
@@ -319,7 +319,7 @@ Fortunately there’s a design pattern that addresses this problem exactly. It�
 
 The first step in refactoring our code is to provide an interface for all operations on the tree. 
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 interface IExpressionVisitor
 {
     void Visit(Call exp);
@@ -337,7 +337,7 @@ interface IExpressionVisitor
 
 This of course makes perfect sense; we want to visit every variant of the <code>Expression</code> type. Our base type correspondingly has to change to accept an <code>IExpressionVisitor</code>. Easy enough.
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 abstract class Expression
 {
     public abstract void Accept(IExpressionVisitor v);
@@ -346,7 +346,7 @@ abstract class Expression
 
 Finally, when an <code>Expression</code> accepts a visitor, all it needs to do is tell the visitor to visit it. The type does this by calling <code>Visit</code> on <i>itself</i>.
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 public override void Accept(IExpressionVisitor v)
 {
     v.Visit(this);
@@ -355,7 +355,7 @@ public override void Accept(IExpressionVisitor v)
 
 The above code shows how the visitable tells the visitor to "visit me." This design pattern is essentially a switch statement on the types of the visitables. It’s like we’re using the <code>is</code> keyword to determine how to proceed when given an <code>Expression</code>. The nice thing about the design pattern, however, is that we don't then need to cast to the target type. As an example, here's how we would visit a <code>Call</code> expression. 
 
-{%highlight csharp linenos %}
+{%highlight csharp %}
 // "Call" just accepted me; here's how I visit a "Call"
 public void Visit(Call exp)
 {
